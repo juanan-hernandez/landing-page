@@ -1,27 +1,109 @@
-# LandingPage
+# landing-page
+Landing page made with Angular and Bootstrap and uploaded into an EC2 instance from AWS
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.1.2.
+## Real example
+http://34.244.221.61/
 
-## Development server
+# Instructions
+```
+git clone https://github.com/juanan-hernandez/landing-page.git
+cd landing-angular
+npm install 
+```
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+## Local execution
+```
+ng serve
+```
 
-## Code scaffolding
+## Server execution
+### AWS connection
+Assuming an EC2 instance has been created with Ubuntu 16.02+
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+### Connecting through SSH into the machine
+```
+ssh -i "yourKey.pem" ubuntu@XXX-XXX-XXX.compute.amazonaws.com
+```
 
-## Build
+### Update your Ubuntu packages
+```
+sudo apt-get update
+sudo apt upgrade
+```
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+### Install git to pull your code
+```
+sudo apt-get install -y git
+```
 
-## Running unit tests
+### Install npm and nodejs
+```
+sudo apt-get install -y npm
+sudo apt-get install -y nodejs
+```
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+### Update npm
+```
+curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+sudo apt-get install -y nodejs
+```
 
-## Running end-to-end tests
+### We will use ngnix server for this setup
+**nginx** is  a web server which can also be used as a reverse proxy, load balancer, mail proxy and HTTP cache
+```
+sudo apt-get install -y nginx
+```
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+### Next, install Angular CLI, needed to run Angular services.
+```
+sudo npm install -g @angular/cli
+```
 
-## Further help
+### Configure ngnix
+```
+cd /etc/nginx/sites-available
+```
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+### Create a file with the site name
+```
+sudo vim landing-page
+```
+
+### Update this with the below content
+```
+server {     
+    listen 80;      
+    listen [::]:80;      
+    server_name <public_ip>;      
+    root /var/www/landing-page/dist/landing-page;   
+    server_tokens off;   
+    index index.html index.htm;     
+ 
+    location / {         
+        # First attempt to server request as file, then         
+        # as directory, then fall back to displaying a 404.          
+        try_files $uri $uri/ /index.html =404;      
+    }
+}
+```
+
+### Create a link in another directory
+```
+cd /etc/nginx/sites-enabled 
+sudo ln -s ../sites-available/landing-page
+ls -l
+```
+
+### Pull the code from the repo
+```
+cd /var/www
+git clone https://github.com/juanan-hernandez/landing-page.git
+cd /var/www/landing-angular
+npm install
+ng build --prod
+```
+
+### Restart ngnix server
+```
+sudo nginx -s reload
+```
