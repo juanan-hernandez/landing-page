@@ -1,18 +1,14 @@
 # landing-page
 Landing page made with Angular and Bootstrap and uploaded into an EC2 instance from AWS
 
-## Real example
+### Real example
 http://34.244.221.61/
 
-# Instructions
+## Local execution
 ```
 git clone https://github.com/juanan-hernandez/landing-page.git
 cd landing-angular
 npm install 
-```
-
-## Local execution
-```
 ng serve
 ```
 
@@ -74,16 +70,10 @@ sudo vim landing-page
 server {     
     listen 80;      
     listen [::]:80;      
-    server_name <public_ip>;      
+    server_name PUBLIC_IP;      
     root /var/www/landing-page/dist/landing-page;   
     server_tokens off;   
-    index index.html index.htm;     
- 
-    location / {         
-        # First attempt to server request as file, then         
-        # as directory, then fall back to displaying a 404.          
-        try_files $uri $uri/ /index.html =404;      
-    }
+    index index.html index.htm;
 }
 ```
 
@@ -106,4 +96,11 @@ ng build --prod
 ### Restart ngnix server
 ```
 sudo nginx -s reload
+```
+
+# Scaling up the project...
+
+## Add new components to the project
+```
+ng generate component COMPONENT-NAME
 ```
