@@ -1,0 +1,33 @@
+.navbar {
+  background-color: var(--morado);
+  margin-bottom: 0%;
+  position: relative;
+  height: 100%;
+}
+
+.nav-link {
+  color: white;
+}
+
+.logo {
+  width: 200px;
+}
+
+.navbar-toggler {
+  color: white;
+}
+
+.nav-link {
+  margin-right: 60px;
+}
+
+@media screen and (min-width: 800px) {
+  .nav-link {
+    margin-right: 0;
+    margin-bottom: 0;
+  }
+}
+
+#navbar-menu {
+  margin: auto;
+}
