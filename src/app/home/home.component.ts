@@ -9,7 +9,7 @@ import { Component, OnInit } from '@angular/core';
 export class HomeComponent implements OnInit {
 
   constructor() { }
-  expand = [false, false, false, false];
+  expand = [false, false, false, false, false];
 
   ngOnInit() {
   }
