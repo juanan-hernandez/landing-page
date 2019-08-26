@@ -90,7 +90,7 @@ cd /var/www
 git clone https://github.com/juanan-hernandez/landing-page.git
 cd /var/www/landing-angular
 npm install
-ng build --prod
+ng build
 ```
 
 ### Restart ngnix server
