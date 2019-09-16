@@ -62,6 +62,12 @@
                   "maximumError": "5mb"
                 }
               ]
+            },
+            "es": {
+              "i18nFile": "src/locale/messages.es.xlf",
+              "i18nLocale": "es",
+              "i18nFormat": "xlf",
+              "aot": true
             }
           }
         },
@@ -73,6 +79,9 @@
           "configurations": {
             "production": {
               "browserTarget": "landing-page:build:production"
+            },
+            "es": {
+              "browserTarget": "landing-page:build:es"
             }
           }
         },
