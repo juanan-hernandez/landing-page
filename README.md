@@ -55,47 +55,54 @@ sudo apt-get install -y nginx
 sudo npm install -g @angular/cli
 ```
 
-### Configure ngnix
-```
-cd /etc/nginx/sites-available
-```
-
-### Create a file with the site name
-```
-sudo vim landing-page
-```
-
-### Update this with the below content
-```
-server {     
-    listen 80;      
-    listen [::]:80;      
-    server_name PUBLIC_IP;      
-    root /var/www/landing-page/dist/landing-page;   
-    server_tokens off;   
-    index index.html index.htm;
-}
-```
-
-### Create a link in another directory
-```
-cd /etc/nginx/sites-enabled 
-sudo ln -s ../sites-available/landing-page
-ls -l
-```
-
-### Pull the code from the repo
+### Pull the code from the repo and build it 
+### Note below that we are going to build the app in 2 different paths, based on the 2 languages we are working with. 
 ```
 cd /var/www
 git clone https://github.com/juanan-hernandez/landing-page.git
 cd /var/www/landing-angular
 npm install
-ng build
+ng build:locale
 ```
 
-### Restart ngnix server
+### If needed, check below whether your dist path corresponds with the generated dist path.
+### In my case it is going to be created in the path 
 ```
-sudo nginx -s reload
+/var/www/landing-angular/dist
+```
+
+### Configure ngnix
+### We are going to create new files /etc/nginx/conf.d/sample.conf with following code inside it.
+
+```
+server {
+    listen 80;
+    listen [::]:80;
+    server_name PUBLIC_IP;
+    index index.html index.htm;
+
+    location /es/ {
+        alias /var/www/landing-angular/dist/es/;
+        try_files $uri$args $uri$args/ /es/index.html;
+    }
+
+    location /en/ {
+        alias /var/www/landing-angular/dist/en/;
+        try_files $uri$args $uri$args/ /en/index.html;
+    }
+
+    # Default to ES
+    location / {
+        alias /var/www/landing-angular/dist/es/;
+        try_files $uri$args $uri$args/ /es/index.html;
+    }
+
+}
+```
+
+### Restart nginx server
+```
+sudo service nginx restart
 ```
 
 # Scaling up the project...
