@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, LOCALE_ID, Inject, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-nav-bar',
@@ -6,8 +6,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./nav-bar.component.scss']
 })
 export class NavBarComponent implements OnInit {
+  languageList = [
+    { code: 'en', label: 'English' },
+    { code: 'es', label: 'Español' }  ];
 
-  constructor() { }
+  constructor(@Inject(LOCALE_ID) protected localeId: string) {
+  }
 
   ngOnInit() {
   }
