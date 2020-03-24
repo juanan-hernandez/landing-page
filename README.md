@@ -58,7 +58,6 @@ cp /your/local/path/landing-angular/dist /var/www/landing-angular/
 ```
 server {
     listen 80;
-    listen [::]:80;
     server_name localhost;
     index index.html index.htm;
 
@@ -80,11 +79,15 @@ server {
 
 }
 ```
-### 3.4. Restart nginx server
+### 3.4. Create symbolic link into nginx sites-enabled
 ```
-sudo service nginx restart
+sudo ln -s /etc/nginx/conf.d/sample.conf /etc/nginx/sites-enabled/sample.conf
 ```
-### 3.5. Go to web browser -> localhost:80 and check whether your site is working or not
+### 3.5. Restart nginx server
+```
+sudo nginx -s reload
+```
+### 3.6. Go to web browser -> localhost:80 and check whether your site is working or not
 #### (*) If you have any issue with nginx, (500, 403, ... errors), take a look to the logs to figure out the concrete reason
 ```
 sudo tail -f /var/log/nginx/error.log
@@ -113,7 +116,7 @@ ssh -i "yourKey.pem" ubuntu@XXX-XXX-XXX.compute.amazonaws.com
 ```
 sudo apt-get install -y nginx
 ```
-### 4.5. Add your local rsa public key to the list of authorized keys (paste the content of 3.2.)
+### 4.5. Add your local rsa public key to the list of authorized keys (paste the content of 4.2.)
 ```
 vim ~/.ssh/authorized_keys
 ```
@@ -123,17 +126,17 @@ sudo mkdir /var/www/landing-angular
 ```
 ### 4.7. Exit from the AWS machine and run the following command in your local machine:
 ```
-scp /your/local/path/landing-angular/dist ubuntu@XXX-XXX-XXX.compute.amazonaws.com:/var/www/landing-angular
+scp -r /your/local/path/landing-angular/dist/* root@XXX-XXX-XXX.compute.amazonaws.com:/var/www/landing-angular
 ```
-### 4.8. Enter again into the AWS machine and repeat the steps 3.3. and 3.4. 
+### 4.8. Enter again into the AWS machine and repeat the steps 3.3. 3.4. and 3.5. 
 (*) Note that in the configuration file now the server_name has to be replaced by your AWS machine public IP
 ```
-    listen [::]:80;
+    listen 80;
     server_name PUBLIC_IP;
     index index.html index.htm;
 ```
 ### 4.9. You should be able to see whether your site is correctly displayed by accessing your AWS public IP from the web browser.  
-
+(*) If you get timed out from the server, please check port 80 is open within the inbound rules of your EC2 instance
 
 # Scaling up the project...
 
